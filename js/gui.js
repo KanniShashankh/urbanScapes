@@ -90,82 +90,82 @@ var params = {
 }
 
 
-var lightFolder = gui.addFolder('Light Options');
-lightFolder.open();
+// var lightFolder = gui.addFolder('Light Options');
+// lightFolder.open();
 
-var lightController = lightFolder.add(params, 'light_angle', 0, Math.PI * 2).listen();;
-lightController.name("Angle");
-lightController.onChange(function (val) {
-    updateLight(val);
-});
+// var lightController = lightFolder.add(params, 'light_angle', 0, Math.PI * 2).listen();;
+// lightController.name("Angle");
+// lightController.onChange(function (val) {
+//     updateLight(val);
+// });
 
-// Update the position, intensity, and colour of the light sources based on the angle given
-function updateLight(val) {
-    if (val >= Math.PI * 2) {
-        val = 0;
-    }
+// // Update the position, intensity, and colour of the light sources based on the angle given
+// function updateLight(val) {
+//     if (val >= Math.PI * 2) {
+//         val = 0;
+//     }
 
-    params.light_angle = val;
-    light.position.y = Math.sin(val) * 1000;
-    light.position.x = Math.cos(val) * 1000;
-    var lightVal = Math.abs(Math.sin(val));
-    light.color = new THREE.Color(1, lightVal, lightVal);
+//     params.light_angle = val;
+//     light.position.y = Math.sin(val) * 1000;
+//     light.position.x = Math.cos(val) * 1000;
+//     var lightVal = Math.abs(Math.sin(val));
+//     light.color = new THREE.Color(1, lightVal, lightVal);
 
-    if (val >= Math.PI) {
-        light.intensity = 0;
-        ambientLight.intensity = 0.1;
-    } else {
-        light.intensity = 0.25 + 0.25 * lightVal;
-        ambientLight.intensity = 0.1 + 0.2 * lightVal;
-    }
-}
+//     if (val >= Math.PI) {
+//         light.intensity = 0;
+//         ambientLight.intensity = 0.1;
+//     } else {
+//         light.intensity = 0.25 + 0.25 * lightVal;
+//         ambientLight.intensity = 0.1 + 0.2 * lightVal;
+//     }
+// }
 
-var lightIncreaseSpeedController = lightFolder.add(params, 'light_increase_speed', 0, 10, 0.1).listen();;
-lightIncreaseSpeedController.name("Light Increase Speed");
-lightIncreaseSpeedController.onChange(function (val) {
-    params.light_increase_speed = val;
-});
+// var lightIncreaseSpeedController = lightFolder.add(params, 'light_increase_speed', 0, 10, 0.1).listen();;
+// lightIncreaseSpeedController.name("Light Increase Speed");
+// lightIncreaseSpeedController.onChange(function (val) {
+//     params.light_increase_speed = val;
+// });
 
-window.setInterval(function () {
-    updateLight(params.light_angle + (params.light_increase_speed / 100));
-}, 30);
+// window.setInterval(function () {
+//     updateLight(params.light_angle + (params.light_increase_speed / 100));
+// }, 30);
 
-var ctrlBtnDay = lightFolder.add(params, 'day');
-ctrlBtnDay.name("Set Time to Day");
+// var ctrlBtnDay = lightFolder.add(params, 'day');
+// ctrlBtnDay.name("Set Time to Day");
 
-var ctrlBtnNight = lightFolder.add(params, 'night');
-ctrlBtnNight.name("Set Time to Night");
+// var ctrlBtnNight = lightFolder.add(params, 'night');
+// ctrlBtnNight.name("Set Time to Night");
 
 
-var cameraFolder = gui.addFolder('Camera Options');
-cameraFolder.open();
+// var cameraFolder = gui.addFolder('Camera Options');
+// cameraFolder.open();
 
-var cameraSpeedController = cameraFolder.add(params, 'camera_rotate_speed', 0, 5, 0.1);
-cameraSpeedController.name("Camera Rotation Speed");
-cameraSpeedController.onChange(function (val) {
-    controls.autoRotateSpeed = val;
-});
+// var cameraSpeedController = cameraFolder.add(params, 'camera_rotate_speed', 0, 5, 0.1);
+// cameraSpeedController.name("Camera Rotation Speed");
+// cameraSpeedController.onChange(function (val) {
+//     controls.autoRotateSpeed = val;
+// });
 
 
 var generationFolder = gui.addFolder('Generation Options');
 generationFolder.open();
 
-var genStepsController = generationFolder.add(params, 'walk_path_steps', 1, 50, 1);
-genStepsController.name("Generation Steps");
-genStepsController.onChange(function (val) {
-    genSteps = val;
-});
+// var genStepsController = generationFolder.add(params, 'walk_path_steps', 1, 50, 1);
+// genStepsController.name("Generation Steps");
+// genStepsController.onChange(function (val) {
+//     genSteps = val;
+// });
 
 var genBtn = generationFolder.add(params, 'generate');
 genBtn.name("Generate New City");
 
 
-//Controller settings, for example whether or not to use first person controls
-var controlsFolder = gui.addFolder('Control Options');
-controlsFolder.open();
+// //Controller settings, for example whether or not to use first person controls
+// var controlsFolder = gui.addFolder('Control Options');
+// controlsFolder.open();
 
-var ctrlBtnFP = controlsFolder.add(params, 'firstPerson');
-ctrlBtnFP.name("First Person Mode");
+// var ctrlBtnFP = controlsFolder.add(params, 'firstPerson');
+// ctrlBtnFP.name("First Person Mode");
 
 
 //Skybox
@@ -228,6 +228,7 @@ buildingFolder.open();
 
 var colourPicker;
 var scalePicker;
+var pollutionLevel;
 
 function selectCheck() {
     if (isSelected == true) {
@@ -250,27 +251,33 @@ function selectCheck() {
             selectedObject.scale.y = paramscale.scale;
         });
         scalePicker.name("Building Height Scale");
+
+        pollutionLevel =  buildingFolder.add(paramscale, 'scale', 0, 100).onChange(function () {
+            selectedObject.scale.y = paramscale.scale;
+        });
+        pollutionLevel.name('Pollution Level')
+
     }
 }
 
-function textureT(xxx) {
-    if (xxx == 1) {
+function textureT(textureMode) {
+    if (textureMode == 1) {
         baseMaterial.map = TextureL1;
-    } else if (xxx == 2) {
+    } else if (textureMode == 2) {
         baseMaterial.map = TextureL2;
-    } else if (xxx == 3) {
+    } else if (textureMode == 3) {
         baseMaterial.map = TextureL3;
-    } else if (xxx == 4) {
+    } else if (textureMode == 4) {
         baseMaterial.map = TextureL4;
-    } else if (xxx == 5) {
+    } else if (textureMode == 5) {
         baseMaterial.map = TextureL5;
-    } else if (xxx == 6) {
+    } else if (textureMode == 6) {
         baseMaterial.map = TextureL6;
-    } else if (xxx == 7) {
+    } else if (textureMode == 7) {
         baseMaterial.map = TextureL7;
-    } else if (xxx == 8) {
+    } else if (textureMode == 8) {
         baseMaterial.map = TextureL8;
-    } else if (xxx == 9) {
+    } else if (textureMode == 9) {
         baseMaterial.map = TextureL9;
     }
 }

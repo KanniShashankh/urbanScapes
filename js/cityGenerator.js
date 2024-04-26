@@ -221,7 +221,9 @@ function AddBuilding(startingX, startingZ, randomX, randomZ, stepsLeft) {
 function AddBuild(model, r, g, b, width, height, depth, xTra, yTra, zTra) {
     var loader = new THREE.PLYLoader();
     var mesh = null;
-    loader.load('assets/building_models/b' + model + '.ply', function (geometry) {
+    // 'assets/building_models/b' + model + '.ply'
+    const url = 'assets/building_models/test.ply'
+    loader.load(url, function (geometry) {
         var material = new THREE.MeshPhongMaterial();
         material.color = new THREE.Color(r, g, b);
         material.shininess = 50;
