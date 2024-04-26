@@ -162,16 +162,6 @@ var genBtn = generationFolder.add(params, 'generate');
 genBtn.name("Generate New City");
 
 
-var spawnFolder = gui.addFolder('Buildings')
-spawnFolder.open()
-
-
-var genBtn1 = generationFolder1.add(params, 'generate1');
-genBtn1.name("Sky1");
-
-var genBtn2 = generationFolder1.add(params, 'generate2');
-genBtn2.name("Sky2");
-
 
 
 // //Controller settings, for example whether or not to use first person controls
