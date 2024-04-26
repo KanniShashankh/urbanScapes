@@ -49,6 +49,7 @@ function onDocumentMouseDown(event) {
                     }
                     if ((intersects[0].object.name != "building") && (isSelected)) {
                         // selectedObject.material.color = selectedObjectColor;
+                        // LOGIC FOR PLACING BUILDING
                         var pos = intersects[0].point;
                         selectedObject.position.x = pos.x;
                         selectedObject.position.z = pos.z;
@@ -58,6 +59,7 @@ function onDocumentMouseDown(event) {
                         if (buildingFolder !== null) {
                             buildingFolder.remove(colourPicker);
                             buildingFolder.remove(scalePicker);
+                            buildingFolder.remove(pollutionLevel);
                         }
                     }
                 }
@@ -78,6 +80,7 @@ function onDocumentMouseDown(event) {
                 if (buildingFolder !== null) {
                     buildingFolder.remove(colourPicker);
                     buildingFolder.remove(scalePicker);
+                    buildingFolder.remove(pollutionLevel);
                 }
             }
             break;
