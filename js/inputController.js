@@ -60,6 +60,7 @@ function onDocumentMouseDown(event) {
                             buildingFolder.remove(colourPicker);
                             buildingFolder.remove(scalePicker);
                             buildingFolder.remove(pollutionLevel);
+                            buildingFolder.remove(bodyScaleLevel);
                         }
                     }
                 }
@@ -81,6 +82,7 @@ function onDocumentMouseDown(event) {
                     buildingFolder.remove(colourPicker);
                     buildingFolder.remove(scalePicker);
                     buildingFolder.remove(pollutionLevel);
+                    buildingFolder.remove(bodyScaleLevel);
                 }
             }
             break;

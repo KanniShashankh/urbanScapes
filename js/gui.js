@@ -9,7 +9,7 @@ var params = {
 
     light_angle: (Math.PI / 2) + 0.2,
     light_increase_speed: 0,
-    height_threshold : 100,
+    height_threshold: 32,
     day: function () {
         params.light_angle = 1.8;
     },
@@ -64,7 +64,7 @@ var params = {
     },
 
     generate11: function () {
-        textureT(1); 
+        textureT(1);
     },
     generate22: function () {
         textureT(2);
@@ -97,7 +97,7 @@ const NUM_OF_BUILDINGS = 24;
 for (let i = 1; i <= NUM_OF_BUILDINGS; i++) {
     params[`spawn${i}`] = function () {
         // console.log(`Spawn ${i}`);
-        AddBuilding(Math.random() % (NUM_OF_BUILDINGS * 100),Math.random() % (NUM_OF_BUILDINGS * 100),0,0,1,i.toString())
+        AddBuilding(Math.random() % (NUM_OF_BUILDINGS * 100), Math.random() % (NUM_OF_BUILDINGS * 100), 0, 0, 1, i.toString())
     }
 }
 
@@ -116,30 +116,46 @@ function updateHeight(val) {
     //     val = 0;
     // }
     params.height_threshold = val;
-   
+
     updateThreshold(val * 10)
 }
+
+
 function updateThreshold(val) {
-    if(val == 1000) {
-        for(var i = 0; i < scene.children.length; i++) {
-            if(scene.children[i].type == "Mesh") {
-                 scene.children[i].visible = true;
+    if (val == 1000) {
+        for (var i = 0; i < scene.children.length; i++) {
+            if (i > 4 && scene.children[i].type == "Mesh") {
+                const selectedObject = scene.children[i];
+                scene.children[i].userData = {
+                    OGColor: scene.children[i].material.color,
+                };
+
+                // selectedObject.material.color = paramcolor.color;
+                // selectedObjectColor = [paramcolor.color[0], paramcolor.color[1], paramcolor.color[2]];
+                // selectedObject.material.color = new THREE.Color(selectedObjectColor[0] / 255, selectedObjectColor[1] / 255, selectedObjectColor[2] / 255);
+
+                scene.children[i].material.color = new THREE.Color(215 / 255, 16 / 255, 63 / 255);
+                scene.children[i].visible = true;
             }
         }
         return;
     }
-    for(var i = 0; i < scene.children.length; i++) {
-        if(scene.children[i].type == "Mesh") {
+    for (var i = 0; i < scene.children.length; i++) {
+        console.log(scene.children[i].userData)
+        const ogCOL = scene.children[i].userData.OGColor;
+        console.log(ogCOL)
+        scene.children[i].material.color = new THREE.Color(ogCOL[0] / 255, ogCOL[1] / 255, ogCOL[2] / 255);
+        if (scene.children[i].type == "Mesh") {
             // console.log(scene.children[i].position.y * 1000, val)
             // const height = Math.abs()
-            if(scene.children[i].position.y * 1000  >  val) {
+            if (scene.children[i].position.y * 1000 > val) {
                 scene.children[i].visible = false;
             } else {
                 scene.children[i].visible = true;
             }
         }
     }
-}   
+}
 
 
 
@@ -296,6 +312,7 @@ buildingFolder.open();
 var colourPicker;
 var scalePicker;
 var pollutionLevel;
+var bodyScaleLevel;
 
 function selectCheck() {
     if (isSelected == true) {
@@ -307,9 +324,11 @@ function selectCheck() {
         };
 
         colourPicker = buildingFolder.addColor(paramcolor, 'color').onChange(function () {
-            selectedObject.material.color = paramcolor.color;
+            console.log("BEFORE COLOR", selectedObject.material.color)
+            // selectedObject.material.color = paramcolor.color;
             selectedObjectColor = [paramcolor.color[0], paramcolor.color[1], paramcolor.color[2]];
             selectedObject.material.color = new THREE.Color(selectedObjectColor[0] / 255, selectedObjectColor[1] / 255, selectedObjectColor[2] / 255);
+            console.log("AFTER COLOR", selectedObject.material.color)
         });
 
         colourPicker.name('Building Colour');
@@ -319,10 +338,17 @@ function selectCheck() {
         });
         scalePicker.name("Building Height Scale");
 
-        pollutionLevel =  buildingFolder.add(paramscale, 'scale', 0, 100).onChange(function () {
+        pollutionLevel = buildingFolder.add(paramscale, 'scale', 0, 100).onChange(function () {
             selectedObject.scale.y = paramscale.scale;
         });
         pollutionLevel.name('Pollution Level')
+
+        bodyScaleLevel = buildingFolder.add(paramscale, 'scale', 0, 100).onChange(function () {
+            selectedObject.scale.x = paramscale.scale;
+            selectedObject.scale.y = paramscale.scale;
+            selectedObject.scale.z = paramscale.scale;
+        });
+        bodyScaleLevel.name('Body Scale Level')
 
     }
 }
