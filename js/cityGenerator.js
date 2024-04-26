@@ -193,6 +193,7 @@ function AddBuilding(startingX, startingZ, randomX, randomZ, stepsLeft, special 
             }
 
             if (special) {
+                console.log("Special placing ", special)
                 AddBuild(
                     special,
                     baseColor - (Math.random() / 10),
@@ -225,6 +226,8 @@ function AddBuilding(startingX, startingZ, randomX, randomZ, stepsLeft, special 
             if(!special) 
             AddBuildingBase(buildingX, 1.0084, buildingZ);
             if (special){
+                console.log("Special placing ", special)
+
                 AddBuild(
                     special,
                     baseColor - (Math.random() / 10),
@@ -260,8 +263,8 @@ function AddBuilding(startingX, startingZ, randomX, randomZ, stepsLeft, special 
 function AddBuild(model, r, g, b, width, height, depth, xTra, yTra, zTra) {
     var loader = new THREE.PLYLoader();
     var mesh = null;
-    // 'assets/building_models/b' + model + '.ply'
-    const url = 'assets/building_models/test.ply'
+    
+    const url = 'assets/building_models/b' + model + '.ply'
     loader.load(url, function (geometry) {
         var material = new THREE.MeshPhongMaterial();
         material.color = new THREE.Color(r, g, b);

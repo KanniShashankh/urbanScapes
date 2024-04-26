@@ -93,7 +93,7 @@ var params = {
 }
 
 
-const NUM_OF_BUILDINGS = 24;
+const NUM_OF_BUILDINGS = 87;
 for (let i = 1; i <= NUM_OF_BUILDINGS; i++) {
     params[`spawn${i}`] = function () {
         // console.log(`Spawn ${i}`);
@@ -141,10 +141,10 @@ function updateThreshold(val) {
         return;
     }
     for (var i = 0; i < scene.children.length; i++) {
-        console.log(scene.children[i].userData)
-        const ogCOL = scene.children[i].userData.OGColor;
-        console.log(ogCOL)
-        scene.children[i].material.color = new THREE.Color(ogCOL[0] / 255, ogCOL[1] / 255, ogCOL[2] / 255);
+        // console.log(scene.children[i].userData)
+        // const ogCOL = scene.children[i].userData.OGColor;
+        // console.log(ogCOL)
+        // scene.children[i].material.color = new THREE.Color(ogCOL[0] / 255, ogCOL[1] / 255, ogCOL[2] / 255);
         if (scene.children[i].type == "Mesh") {
             // console.log(scene.children[i].position.y * 1000, val)
             // const height = Math.abs()
@@ -223,9 +223,22 @@ spawnOptions.open();
 
 var categoryFolder = spawnOptions.addFolder('Spawn Buildings');
 
-for (let i = 1; i <= NUM_OF_BUILDINGS; i++) {
+for (let i = 1; i <= 24; i++) {
     var spawnBtn = categoryFolder.add(params, `spawn${i}`);
     spawnBtn.name(`Building ${i}`);
+}
+
+var carFolder = spawnOptions.addFolder('Spawn Cars');
+
+for (let i = 25; i <= 26; i++) {
+    var spawnBtn = carFolder.add(params, `spawn${i}`);
+    spawnBtn.name(`Cars ${i - 24}`);
+}
+
+var bridgeFolder = spawnOptions.addFolder('Spawn Roads/Bridges');
+for (let i = 27; i <= 87; i++) {
+    var spawnBtn = bridgeFolder.add(params, `spawn${i}`);
+    spawnBtn.name(`Roads/Bridges ${i - 26}`);
 }
 
 var generationFolder = gui.addFolder('Generation Options');
