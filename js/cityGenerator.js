@@ -104,7 +104,7 @@ function AddLightPole(x, y, z) {
     });
 }
 
-function AddBuilding(startingX, startingZ, randomX, randomZ, stepsLeft) {
+function AddBuilding(startingX, startingZ, randomX, randomZ, stepsLeft, special = null) {
     var buildingWidth = 1.5 + (Math.random() * 1);
     var buildingHeight = 1 + (Math.random() * (stepsLeft / 6));
 
@@ -156,9 +156,12 @@ function AddBuilding(startingX, startingZ, randomX, randomZ, stepsLeft) {
                     buildingX -= 50;
                 }
 
-                AddBuildingBase(buildingX + 50, 1.0084, buildingZ);
-                AddBuildingBase(buildingX, 1.0084, buildingZ);
-                AddBuildingBase(buildingX - 50, 1.0084, buildingZ);
+                if(!special){
+                    AddBuildingBase(buildingX + 50, 1.0084, buildingZ);
+                    AddBuildingBase(buildingX, 1.0084, buildingZ);
+                    AddBuildingBase(buildingX - 50, 1.0084, buildingZ);
+                }
+
             } else if (isWideRand > 25) {
                 var freeSpaceAdj = true;
 
@@ -179,28 +182,63 @@ function AddBuilding(startingX, startingZ, randomX, randomZ, stepsLeft) {
                     buildingZ -= 50;
                 }
 
+                if(!special){
                 AddBuildingBase(buildingX, 1.0084, buildingZ - 50);
                 AddBuildingBase(buildingX, 1.0084, buildingZ);
                 AddBuildingBase(buildingX, 1.0084, buildingZ + 50);
+                }
             } else {
+                if(!special)
                 AddBuildingBase(buildingX, 1.0084, buildingZ);
             }
 
+            if (special) {
+                AddBuild(
+                    special,
+                    baseColor - (Math.random() / 10),
+                    baseColor - (Math.random() / 10),
+                    baseColor - (Math.random() / 10),
+                    buildingWidth + wideBuildingWidth,
+                    buildingHeight,
+                    buildingWidth + wideBuildingDepth,
+                    buildingX,
+                    buildingY,
+                    buildingZ
+                );
+            }
+            else {
+                AddBuild(
+                    Math.floor((Math.random() * 8) + 1),
+                    baseColor - (Math.random() / 10),
+                    baseColor - (Math.random() / 10),
+                    baseColor - (Math.random() / 10),
+                    buildingWidth + wideBuildingWidth,
+                    buildingHeight,
+                    buildingWidth + wideBuildingDepth,
+                    buildingX,
+                    buildingY,
+                    buildingZ
+                );
+            }
 
-            AddBuild(
-                Math.floor((Math.random() * 8) + 1),
-                baseColor - (Math.random() / 10),
-                baseColor - (Math.random() / 10),
-                baseColor - (Math.random() / 10),
-                buildingWidth + wideBuildingWidth,
-                buildingHeight,
-                buildingWidth + wideBuildingDepth,
-                buildingX,
-                buildingY,
-                buildingZ
-            );
         } else { // don't make a smaller building double width
+            if(!special) 
             AddBuildingBase(buildingX, 1.0084, buildingZ);
+            if (special){
+                AddBuild(
+                    special,
+                    baseColor - (Math.random() / 10),
+                    baseColor - (Math.random() / 10),
+                    baseColor - (Math.random() / 10),
+                    buildingWidth,
+                    buildingHeight,
+                    buildingWidth,
+                    buildingX,
+                    buildingY,
+                    buildingZ
+                );
+            }
+            else {
             AddBuild(
                 Math.floor((Math.random() * 5) + 9),
                 baseColor - (Math.random() / 10),
@@ -213,6 +251,7 @@ function AddBuilding(startingX, startingZ, randomX, randomZ, stepsLeft) {
                 buildingY,
                 buildingZ
             );
+        }
         }
     }
 }

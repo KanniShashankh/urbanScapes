@@ -1,14 +1,15 @@
+
+
 var gui = new dat.GUI({
     name: "City Options"
 });
-
-
 
 var params = {
     selected_building: "empty",
 
     light_angle: (Math.PI / 2) + 0.2,
     light_increase_speed: 0,
+    height_threshold : 100,
     day: function () {
         params.light_angle = 1.8;
     },
@@ -63,7 +64,7 @@ var params = {
     },
 
     generate11: function () {
-        textureT(1); //match the ground
+        textureT(1); 
     },
     generate22: function () {
         textureT(2);
@@ -92,62 +93,124 @@ var params = {
 }
 
 
-// var lightFolder = gui.addFolder('Light Options');
-// lightFolder.open();
+const NUM_OF_BUILDINGS = 24;
+for (let i = 1; i <= NUM_OF_BUILDINGS; i++) {
+    params[`spawn${i}`] = function () {
+        // console.log(`Spawn ${i}`);
+        AddBuilding(Math.random() % (NUM_OF_BUILDINGS * 100),Math.random() % (NUM_OF_BUILDINGS * 100),0,0,1,i.toString())
+    }
+}
 
-// var lightController = lightFolder.add(params, 'light_angle', 0, Math.PI * 2).listen();;
-// lightController.name("Angle");
-// lightController.onChange(function (val) {
-//     updateLight(val);
-// });
+var heightFolder = gui.addFolder('Height Thresholds');
+heightFolder.open();
 
-// // Update the position, intensity, and colour of the light sources based on the angle given
-// function updateLight(val) {
-//     if (val >= Math.PI * 2) {
-//         val = 0;
-//     }
-
-//     params.light_angle = val;
-//     light.position.y = Math.sin(val) * 1000;
-//     light.position.x = Math.cos(val) * 1000;
-//     var lightVal = Math.abs(Math.sin(val));
-//     light.color = new THREE.Color(1, lightVal, lightVal);
-
-//     if (val >= Math.PI) {
-//         light.intensity = 0;
-//         ambientLight.intensity = 0.1;
-//     } else {
-//         light.intensity = 0.25 + 0.25 * lightVal;
-//         ambientLight.intensity = 0.1 + 0.2 * lightVal;
-//     }
-// }
-
-// var lightIncreaseSpeedController = lightFolder.add(params, 'light_increase_speed', 0, 10, 0.1).listen();;
-// lightIncreaseSpeedController.name("Light Increase Speed");
-// lightIncreaseSpeedController.onChange(function (val) {
-//     params.light_increase_speed = val;
-// });
-
-// window.setInterval(function () {
-//     updateLight(params.light_angle + (params.light_increase_speed / 100));
-// }, 30);
-
-// var ctrlBtnDay = lightFolder.add(params, 'day');
-// ctrlBtnDay.name("Set Time to Day");
-
-// var ctrlBtnNight = lightFolder.add(params, 'night');
-// ctrlBtnNight.name("Set Time to Night");
+var heightController = heightFolder.add(params, 'height_threshold', 0, 100).listen();;
+heightController.name("Height Story Limit");
+heightController.onChange(function (val) {
+    updateHeight(val);
+});
 
 
-// var cameraFolder = gui.addFolder('Camera Options');
-// cameraFolder.open();
+function updateHeight(val) {
+    // if (val >= 1000) {
+    //     val = 0;
+    // }
+    params.height_threshold = val;
+   
+    updateThreshold(val * 10)
+}
+function updateThreshold(val) {
+    if(val == 1000) {
+        for(var i = 0; i < scene.children.length; i++) {
+            if(scene.children[i].type == "Mesh") {
+                 scene.children[i].visible = true;
+            }
+        }
+        return;
+    }
+    for(var i = 0; i < scene.children.length; i++) {
+        if(scene.children[i].type == "Mesh") {
+            // console.log(scene.children[i].position.y * 1000, val)
+            // const height = Math.abs()
+            if(scene.children[i].position.y * 1000  >  val) {
+                scene.children[i].visible = false;
+            } else {
+                scene.children[i].visible = true;
+            }
+        }
+    }
+}   
 
-// var cameraSpeedController = cameraFolder.add(params, 'camera_rotate_speed', 0, 5, 0.1);
-// cameraSpeedController.name("Camera Rotation Speed");
-// cameraSpeedController.onChange(function (val) {
-//     controls.autoRotateSpeed = val;
-// });
 
+
+// var heightController = heightFolder.add(params, 'height_threshold', 0, 100, 1).listen();;
+
+
+var lightFolder = gui.addFolder('Light Options');
+lightFolder.open();
+
+var lightController = lightFolder.add(params, 'light_angle', 0, Math.PI * 2).listen();;
+lightController.name("Angle");
+lightController.onChange(function (val) {
+    updateLight(val);
+});
+
+// Update the position, intensity, and colour of the light sources based on the angle given
+function updateLight(val) {
+    if (val >= Math.PI * 2) {
+        val = 0;
+    }
+
+    params.light_angle = val;
+    light.position.y = Math.sin(val) * 1000;
+    light.position.x = Math.cos(val) * 1000;
+    var lightVal = Math.abs(Math.sin(val));
+    light.color = new THREE.Color(1, lightVal, lightVal);
+
+    if (val >= Math.PI) {
+        light.intensity = 0;
+        ambientLight.intensity = 0.1;
+    } else {
+        light.intensity = 0.25 + 0.25 * lightVal;
+        ambientLight.intensity = 0.1 + 0.2 * lightVal;
+    }
+}
+
+var lightIncreaseSpeedController = lightFolder.add(params, 'light_increase_speed', 0, 10, 0.1).listen();;
+lightIncreaseSpeedController.name("Light Increase Speed");
+lightIncreaseSpeedController.onChange(function (val) {
+    params.light_increase_speed = val;
+});
+
+window.setInterval(function () {
+    updateLight(params.light_angle + (params.light_increase_speed / 100));
+}, 30);
+
+var ctrlBtnDay = lightFolder.add(params, 'day');
+ctrlBtnDay.name("Set Time to Day");
+
+var ctrlBtnNight = lightFolder.add(params, 'night');
+ctrlBtnNight.name("Set Time to Night");
+
+
+var cameraFolder = gui.addFolder('Camera Options');
+cameraFolder.open();
+
+var cameraSpeedController = cameraFolder.add(params, 'camera_rotate_speed', 0, 5, 0.1);
+cameraSpeedController.name("Camera Rotation Speed");
+cameraSpeedController.onChange(function (val) {
+    controls.autoRotateSpeed = val;
+});
+
+var spawnOptions = gui.addFolder('Spawn Options');
+spawnOptions.open();
+
+var categoryFolder = spawnOptions.addFolder('Spawn Buildings');
+
+for (let i = 1; i <= NUM_OF_BUILDINGS; i++) {
+    var spawnBtn = categoryFolder.add(params, `spawn${i}`);
+    spawnBtn.name(`Building ${i}`);
+}
 
 var generationFolder = gui.addFolder('Generation Options');
 generationFolder.open();
@@ -164,12 +227,12 @@ genBtn.name("Generate New City");
 
 
 
-// //Controller settings, for example whether or not to use first person controls
-// var controlsFolder = gui.addFolder('Control Options');
-// controlsFolder.open();
+//Controller settings, for example whether or not to use first person controls
+var controlsFolder = gui.addFolder('Control Options');
+controlsFolder.open();
 
-// var ctrlBtnFP = controlsFolder.add(params, 'firstPerson');
-// ctrlBtnFP.name("First Person Mode");
+var ctrlBtnFP = controlsFolder.add(params, 'firstPerson');
+ctrlBtnFP.name("First Person Mode");
 
 
 //Skybox
@@ -247,8 +310,8 @@ function selectCheck() {
             selectedObject.material.color = paramcolor.color;
             selectedObjectColor = [paramcolor.color[0], paramcolor.color[1], paramcolor.color[2]];
             selectedObject.material.color = new THREE.Color(selectedObjectColor[0] / 255, selectedObjectColor[1] / 255, selectedObjectColor[2] / 255);
-
         });
+
         colourPicker.name('Building Colour');
 
         scalePicker = buildingFolder.add(paramscale, 'scale', 0, 100).onChange(function () {
