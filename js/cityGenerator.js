@@ -226,7 +226,7 @@ function AddBuilding(startingX, startingZ, randomX, randomZ, stepsLeft, special 
             if(!special) 
             AddBuildingBase(buildingX, 1.0084, buildingZ);
             if (special){
-                console.log("Special placing ", special)
+                // console.log("Special placing ", special)
 
                 AddBuild(
                     special,
@@ -304,7 +304,7 @@ function RandomWalk(startingX, startingZ, stepsLeft) {
         [-1, 0],
         [1, 0]
     ][Math.random() * 4 | 0]; // randomly choose one of the 4 coordinates
-
+    // randomRoadCoords[]
     var newX = startingX + randomRoadCoords[0]; // get the x coord of the randomly chosen coordinate
     var newZ = startingZ + randomRoadCoords[1]; // get the z coord of the randomly chosen coordinate
 

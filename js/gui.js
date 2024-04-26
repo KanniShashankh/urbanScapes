@@ -263,11 +263,11 @@ for (let i = 27; i <= 87; i++) {
 var generationFolder = gui.addFolder('Generation Options');
 generationFolder.open();
 
-// var genStepsController = generationFolder.add(params, 'walk_path_steps', 1, 50, 1);
-// genStepsController.name("Generation Steps");
-// genStepsController.onChange(function (val) {
-//     genSteps = val;
-// });
+var genStepsController = generationFolder.add(params, 'walk_path_steps', 1, 50, 1);
+genStepsController.name("Generation Steps");
+genStepsController.onChange(function (val) {
+    genSteps = val;
+});
 
 var genBtn = generationFolder.add(params, 'generate');
 genBtn.name("Generate New City");
