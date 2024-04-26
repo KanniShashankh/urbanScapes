@@ -4,6 +4,7 @@ var gui = new dat.GUI({
     name: "City Options"
 });
 
+
 var params = {
     selected_building: "empty",
 
@@ -42,6 +43,21 @@ var params = {
 
         controls.update();
         camera.updateProjectionMatrix();
+    },
+
+    export : function () {
+        const now = new Date().toISOString();
+        const filename = 'City_JSON_' + now + '.json';
+        const file = scene.toJSON();
+        const jsonBlob = new Blob([JSON.stringify(file, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(jsonBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     },
 
     generate1: function () { //match the skybox
@@ -160,6 +176,9 @@ function updateThreshold(val) {
 
 
 // var heightController = heightFolder.add(params, 'height_threshold', 0, 100, 1).listen();;
+
+
+
 
 
 var lightFolder = gui.addFolder('Light Options');
@@ -327,6 +346,16 @@ var scalePicker;
 var pollutionLevel;
 var bodyScaleLevel;
 
+var exportFolder = gui.addFolder('Export Options');
+exportFolder.open();
+
+// var importBtn = exportFolder.add(params, 'import');
+// importBtn.name("Import City");
+
+var exportBtn = exportFolder.add(params, 'export');
+exportBtn.name("Export City");
+
+
 function selectCheck() {
     if (isSelected == true) {
         var paramcolor = {
@@ -387,3 +416,52 @@ function textureT(textureMode) {
         baseMaterial.map = TextureL9;
     }
 }
+
+let orgData;
+
+// function to switch themes for pollution 
+document.getElementsByClassName("pTheme")[0].addEventListener("click", function () {
+    for (var i = 0; i < scene.children.length; i++) {
+        if (i > 4 && scene.children[i].type == "Mesh") {
+            const selectedObject = scene.children[i];
+            scene.children[i].userData = {
+                OGColor: scene.children[i].material.color,
+            };
+
+            // selectedObject.material.color = paramcolor.color;
+            // selectedObjectColor = [paramcolor.color[0], paramcolor.color[1], paramcolor.color[2]];
+            // selectedObject.material.color = new THREE.Color(selectedObjectColor[0] / 255, selectedObjectColor[1] / 255, selectedObjectColor[2] / 255);
+
+            scene.children[i].material.color = new THREE.Color(215 / 255, 16 / 255, 63 / 255);
+            scene.children[i].visible = true;
+        }
+    }
+})
+
+// function to switch themes for energy
+document.getElementsByClassName("eTheme")[0].addEventListener("click", function () {
+    for (var i = 0; i < scene.children.length; i++) {
+        if (i > 4 && scene.children[i].type == "Mesh") {
+            const selectedObject = scene.children[i];
+            scene.children[i].userData = {
+                OGColor: scene.children[i].material.color,
+            };
+
+            // selectedObject.material.color = paramcolor.color;
+            // selectedObjectColor = [paramcolor.color[0], paramcolor.color[1], paramcolor.color[2]];
+            // selectedObject.material.color = new THREE.Color(selectedObjectColor[0] / 255, selectedObjectColor[1] / 255, selectedObjectColor[2] / 255);
+
+            scene.children[i].material.color = new THREE.Color(215 / 255, 16 / 255, 63 / 255);
+            scene.children[i].visible = true;
+        }
+    }
+})
+
+// function to switch back to normal
+document.getElementsByClassName("normal")[0].addEventListener("click", function () {
+    // Retrieve orgData from localStorage
+    for (var i = 0; i < deserializedScene.children.length; i++) {
+        scene.children[i].material.color = deserializedScene.children[i].material.color;
+        scene.children[i].visible = true;
+    }
+})

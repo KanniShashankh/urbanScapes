@@ -158,5 +158,6 @@ var onKeyUp = function (event) {
     }
 };
 
+
 document.addEventListener('keydown', onKeyDown, false);
 document.addEventListener('keyup', onKeyUp, false);

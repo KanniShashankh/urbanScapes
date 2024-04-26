@@ -23,6 +23,22 @@
   <!-- the styling that our site uses -->
   <link rel="stylesheet" href="style.css">
 
+  <script>
+        // Function to create and download JSON file
+        function downloadJSON() {
+            const filename = 'City_JSON_' + Date.toISOString() + '.json';
+            const file = scene.toJSON();
+            const jsonBlob = new Blob([JSON.stringify(file, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(jsonBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+  </script>
 
   <!-- include the three.js library -->
   <script type="text/javascript" src="js/vendor/three.js"> </script>
@@ -47,11 +63,12 @@
   <!-- The main information panel, shown in the top-left -->
   <div id="info-panel">
     <h1>UrbanScapes City Planner </h1>
-
+    
     <div id="info-content">
       <!-- <h3>Press the '<i>Generate New</i>' button to start!</h3> -->
       <h3>A open Platform for City Building and Visualization</h3>
       <h3>Built with ❤️ at HackXcelerate, CBIT. </h3>
+
 
       <!-- <h4>Camera Controls</h4>
       <ul>
@@ -83,6 +100,37 @@
     <div id="info-btn" class="btn">[click panel anywhere to hide]</div>
 
   </div>
+
+  <div id="info-panel" style="margin-top: 175px;">
+    <h4 >Themes</h4>
+    <!-- theme shifting buttons -->
+      <Button class="eTheme" type="button">Energy</Button>
+      <Button class="pTheme" type="button">Pollution</Button> 
+      <Button class="normal" type="button">Normal</Button>
+      <!-- <Button onclick="downloadJSON(scene, 'hello.json');console.log('Hello')" >Download</Button> -->
+      <input type="file" id="fileInput">
+      <button id="loadButton">Apply</button>
+  </div>
+
+
+  <script>
+    document.getElementById('loadButton').addEventListener('click', function() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const jsonData = JSON.parse(event.target.result);
+                scene = new THREE.ObjectLoader().parse(jsonData);
+                console.log(jsonData);
+                // Now you can use jsonData as needed
+            };
+            reader.readAsText(file);
+        } else {
+            console.error('No file selected.');
+        }
+    });
+  </script>
 
   <!-- Setup the City Generator -->
   <script type="text/javascript" src="js/setup.js"></script>
