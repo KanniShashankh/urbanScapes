@@ -358,7 +358,7 @@ exportBtn.name("Export City");
 
 function selectCheck() {
     if (isSelected == true) {
-        var paramcolor = {
+                var paramcolor = {
             color: selectedObjectColor
         };
         var paramscale = {
@@ -366,11 +366,11 @@ function selectCheck() {
         };
 
         colourPicker = buildingFolder.addColor(paramcolor, 'color').onChange(function () {
-            console.log("BEFORE COLOR", selectedObject.material.color)
+            // console.log("BEFORE COLOR", selectedObject.material.color)
             // selectedObject.material.color = paramcolor.color;
             selectedObjectColor = [paramcolor.color[0], paramcolor.color[1], paramcolor.color[2]];
             selectedObject.material.color = new THREE.Color(selectedObjectColor[0] / 255, selectedObjectColor[1] / 255, selectedObjectColor[2] / 255);
-            console.log("AFTER COLOR", selectedObject.material.color)
+            // console.log("AFTER COLOR", selectedObject.material.color)
         });
 
         colourPicker.name('Building Colour');
