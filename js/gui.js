@@ -121,7 +121,7 @@ const NUM_OF_BUILDINGS = 87;
 for (let i = 1; i <= NUM_OF_BUILDINGS; i++) {
     params[`spawn${i}`] = function () {
         // console.log(`Spawn ${i}`);
-        AddBuilding(Math.random() % (NUM_OF_BUILDINGS * 100), Math.random() % (NUM_OF_BUILDINGS * 100), 0, 0, 1, i.toString())
+        AddBuilding(200, 200, Math.floor(Math.random() * (100 - 0 + 1)) + 0, Math.floor(Math.random() * (100 - 0 + 1)) + 0, 1, i.toString())
     }
 }
 

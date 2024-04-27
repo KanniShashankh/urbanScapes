@@ -59,7 +59,6 @@ var MyResize = function () {
     blockedWidth = width - 245;
 };
 
-GenerateCity(20);
 
 //Runs the game loop
 var GameLoop = function () {
