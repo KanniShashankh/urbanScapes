@@ -121,7 +121,7 @@ const NUM_OF_BUILDINGS = 87;
 for (let i = 1; i <= NUM_OF_BUILDINGS; i++) {
     params[`spawn${i}`] = function () {
         // console.log(`Spawn ${i}`);
-        AddBuilding(200, 200, Math.floor(Math.random() * (100 - 0 + 1)) + 0, Math.floor(Math.random() * (100 - 0 + 1)) + 0, 1, i.toString())
+        AddBuilding(Math.random() % (NUM_OF_BUILDINGS * 100), Math.random() % (NUM_OF_BUILDINGS * 100), 0, 0, 1, i.toString())
     }
 }
 
@@ -434,6 +434,8 @@ function textureT(textureMode) {
 
 let orgData;
 
+console.log(scene)
+
 // function to switch themes for pollution 
 document.getElementsByClassName("pTheme")[0].addEventListener("click",  function () {
     try{
@@ -538,6 +540,7 @@ document.getElementsByClassName("Hindex")[0].addEventListener("click", function 
     }
     for (var i = 0; i < scene.children.length; i++) {
         if (i > 4 && scene.children[i].type == "Mesh") {
+            console.log(scene.children[i])
             const selectedObject = scene.children[i];
             let first = selectedObject.scale.x + selectedObject.scale.y + selectedObject.scale.z + Math.floor(Math.random() * 100000) + 1 - Math.floor(Math.random() * 100000) + 1;;
             first = Math.abs(first);
