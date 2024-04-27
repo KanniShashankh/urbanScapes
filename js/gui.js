@@ -424,123 +424,38 @@ document.getElementsByClassName("pTheme")[0].addEventListener("click", function 
     for (var i = 0; i < scene.children.length; i++) {
         if (i > 4 && scene.children[i].type == "Mesh") {
             const selectedObject = scene.children[i];
-            let first = selectedObject.scale.x + selectedObject.scale.y + selectedObject.scale.z;
-    
-            first = first % 10;
-    
-            // Determine color based on the sum of scale components
-            let color;
-            if (first >= 9) {
-                color = new THREE.Color(150 / 255, 0 / 255, 0 / 255); // Darkest shade
-            } else if (first >= 8) {
-                color = new THREE.Color(175 / 255, 0 / 255, 0 / 255);
-            } else if (first >= 7) {
-                color = new THREE.Color(200 / 255, 0 / 255, 0 / 255);
-            } else if (first >= 6) {
-                color = new THREE.Color(225 / 255, 0 / 255, 0 / 255);
-            } else if (first >= 5) {
-                color = new THREE.Color(250 / 255, 0 / 255, 0 / 255);
-            } else if (first >= 4) {
-                color = new THREE.Color(255 / 255, 25 / 255, 25 / 255);
-            } else if (first >= 3) {
-                color = new THREE.Color(255 / 255, 50 / 255, 50 / 255);
-            } else if (first >= 2) {
-                color = new THREE.Color(255 / 255, 75 / 255, 75 / 255);
-            } else if (first >= 1) {
-                color = new THREE.Color(255 / 255, 100 / 255, 100 / 255);
-            } else {
-                color = new THREE.Color(255 / 255, 125 / 255, 125 / 255); // Lightest shade
-            }
-    
-            // Assign the calculated color to the object
-            scene.children[i].material.color = color;
+            scene.children[i].userData = {
+                OGColor: scene.children[i].material.color,
+            };
+
+            // selectedObject.material.color = paramcolor.color;
+            // selectedObjectColor = [paramcolor.color[0], paramcolor.color[1], paramcolor.color[2]];
+            // selectedObject.material.color = new THREE.Color(selectedObjectColor[0] / 255, selectedObjectColor[1] / 255, selectedObjectColor[2] / 255);
+
+            scene.children[i].material.color = new THREE.Color(215 / 255, 16 / 255, 63 / 255);
+            scene.children[i].visible = true;
         }
     }
-    
-});
+})
 
 // function to switch themes for energy
 document.getElementsByClassName("eTheme")[0].addEventListener("click", function () {
     for (var i = 0; i < scene.children.length; i++) {
-    if (i > 4 && scene.children[i].type == "Mesh") {
-        const selectedObject = scene.children[i];
-        let first = selectedObject.scale.x + selectedObject.scale.y + selectedObject.scale.z;
-
-        first = first % 10;
-
-        // Determine color based on the sum of scale components
-        let color;
-        if (first >= 9) {
-            color = new THREE.Color(255 / 255, 165 / 255, 0 / 255); // Full intensity orange
-        } else if (first >= 8) {
-            color = new THREE.Color(255 / 255, 140 / 255, 0 / 255);
-        } else if (first >= 7) {
-            color = new THREE.Color(255 / 255, 127 / 255, 0 / 255);
-        } else if (first >= 6) {
-            color = new THREE.Color(255 / 255, 114 / 255, 0 / 255);
-        } else if (first >= 5) {
-            color = new THREE.Color(255 / 255, 102 / 255, 0 / 255);
-        } else if (first >= 4) {
-            color = new THREE.Color(255 / 255, 89 / 255, 0 / 255);
-        } else if (first >= 3) {
-            color = new THREE.Color(255 / 255, 76 / 255, 0 / 255);
-        } else if (first >= 2) {
-            color = new THREE.Color(255 / 255, 64 / 255, 0 / 255);
-        } else if (first >= 1) {
-            color = new THREE.Color(255 / 255, 51 / 255, 0 / 255);
-        } else {
-            color = new THREE.Color(255 / 255, 39 / 255, 0 / 255); // Lowest intensity orange
-        }
-
-        // Assign the calculated color to the object
-        scene.children[i].material.color = color;
-    }
-}
-
-    
-})
-
-// function to switch themes for energy
-document.getElementsByClassName("Hindex")[0].addEventListener("click", function () {
-    for (var i = 0; i < scene.children.length; i++) {
         if (i > 4 && scene.children[i].type == "Mesh") {
             const selectedObject = scene.children[i];
-            let first = selectedObject.scale.x + selectedObject.scale.y + selectedObject.scale.z + Math.floor(Math.random() * 100000) + 1 - Math.floor(Math.random() * 100000) + 1;;
-            first = Math.abs(first);
-            first = first % 10;
-    
-            // Determine color based on the sum of scale components
-            let color;
-            if (first >= 9) {
-                color = new THREE.Color(0 / 255, 255 / 255, 0 / 255); // Full intensity green
-            } else if (first >= 8) {
-                color = new THREE.Color(0 / 255, 220 / 255, 0 / 255);
-            } else if (first >= 7) {
-                color = new THREE.Color(0 / 255, 190 / 255, 0 / 255);
-            } else if (first >= 6) {
-                color = new THREE.Color(0 / 255, 160 / 255, 0 / 255);
-            } else if (first >= 5) {
-                color = new THREE.Color(0 / 255, 130 / 255, 0 / 255);
-            } else if (first >= 4) {
-                color = new THREE.Color(0 / 255, 100 / 255, 0 / 255);
-            } else if (first >= 3) {
-                color = new THREE.Color(0 / 255, 90 / 255, 0 / 255);
-            } else if (first >= 2) {
-                color = new THREE.Color(0 / 255, 80 / 255, 0 / 255);
-            } else if (first >= 1) {
-                color = new THREE.Color(0 / 255, 75 / 255, 0 / 255);
-            } else {
-                color = new THREE.Color(0 / 255, 70 / 255, 0 / 255); // Lowest intensity green
-            }
-    
-            // Assign the calculated color to the object
-            scene.children[i].material.color = color;
+            scene.children[i].userData = {
+                OGColor: scene.children[i].material.color,
+            };
+
+            // selectedObject.material.color = paramcolor.color;
+            // selectedObjectColor = [paramcolor.color[0], paramcolor.color[1], paramcolor.color[2]];
+            // selectedObject.material.color = new THREE.Color(selectedObjectColor[0] / 255, selectedObjectColor[1] / 255, selectedObjectColor[2] / 255);
+
+            scene.children[i].material.color = new THREE.Color(215 / 255, 16 / 255, 63 / 255);
+            scene.children[i].visible = true;
         }
     }
-    
-    
 })
-
 
 // function to switch back to normal
 document.getElementsByClassName("normal")[0].addEventListener("click", function () {
