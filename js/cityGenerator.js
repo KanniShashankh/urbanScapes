@@ -298,14 +298,15 @@ function AddBuild(model, r, g, b, width, height, depth, xTra, yTra, zTra) {
 // A recursive Random Walk algorithm, with a specified starting X and Z coordinate, and the remaining number of times to recursively call
 // This adds all of the buildings and roads to our city
 function RandomWalk(startingX, startingZ, stepsLeft) {
+    let spacingFactor = 1;
     var randomRoadCoords = [ // the 4 potential coordinates for a road to be placed 
         [0, 1],
         [0, -1],
         [-1, 0],
         [1, 0]
     ][Math.random() * 4 | 0]; // randomly choose one of the 4 coordinates
-    var newX = startingX + randomRoadCoords[0]; // get the x coord of the randomly chosen coordinate
-    var newZ = startingZ + randomRoadCoords[1]; // get the z coord of the randomly chosen coordinate
+    var newX = startingX + (randomRoadCoords[0] * spacingFactor); // get the x coord of the randomly chosen coordinate
+    var newZ = startingZ + (randomRoadCoords[1] * spacingFactor); // get the z coord of the randomly chosen coordinate
 
     AddRoads(newX * 5, 1, newZ * 5, 5); // Add a section of road at the randomly chosen offset
 
@@ -316,8 +317,7 @@ function RandomWalk(startingX, startingZ, stepsLeft) {
         [-0.5, 0.5],
         [-0.5, -0.5]
     ][Math.random() * 4 | 0]; // randomly choose one of the 4 coordinates
-
-    AddBuilding(startingX, startingZ, randomBuildingCoords[0], randomBuildingCoords[1], stepsLeft); // Add a building at the randomly chosen offset
+    AddBuilding(startingX, startingZ, randomBuildingCoords[0] * spacingFactor, randomBuildingCoords[1] * spacingFactor, stepsLeft); // Add a building at the randomly chosen offset
 
 
     var newStepsLeft = stepsLeft - 1; // decrement the amount of times left to recursively call

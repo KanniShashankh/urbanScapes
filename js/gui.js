@@ -45,7 +45,7 @@ var params = {
         camera.updateProjectionMatrix();
     },
 
-    export : function () {
+    export: function () {
         const now = new Date().toISOString();
         const filename = 'City_JSON_' + now + '.json';
         const file = scene.toJSON();
@@ -58,6 +58,14 @@ var params = {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+    },
+
+    deleteObj: function () {
+        console.log("called");
+        if (!isSelected) {
+            return;
+        }
+        console.log(selectedObject)
     },
 
     generate1: function () { //match the skybox
@@ -345,6 +353,7 @@ var colourPicker;
 var scalePicker;
 var pollutionLevel;
 var bodyScaleLevel;
+var deleteButton;
 
 var exportFolder = gui.addFolder('Export Options');
 exportFolder.open();
@@ -358,7 +367,9 @@ exportBtn.name("Export City");
 
 function selectCheck() {
     if (isSelected == true) {
-                var paramcolor = {
+        console.log('selcte')
+        console.log(selectedObject)
+        var paramcolor = {
             color: selectedObjectColor
         };
         var paramscale = {
@@ -380,10 +391,10 @@ function selectCheck() {
         });
         scalePicker.name("Building Height Scale");
 
-        pollutionLevel = buildingFolder.add(paramscale, 'scale', 0, 100).onChange(function () {
-            selectedObject.scale.y = paramscale.scale;
-        });
-        pollutionLevel.name('Pollution Level')
+        // pollutionLevel = buildingFolder.add(paramscale, 'scale', 0, 100).onChange(function () {
+        //     selectedObject.scale.y = paramscale.scale;
+        // });
+        // pollutionLevel.name('Pollution Level')
 
         bodyScaleLevel = buildingFolder.add(paramscale, 'scale', 0, 100).onChange(function () {
             selectedObject.scale.x = paramscale.scale;
@@ -391,6 +402,10 @@ function selectCheck() {
             selectedObject.scale.z = paramscale.scale;
         });
         bodyScaleLevel.name('Body Scale Level')
+
+        deleteButton = buildingFolder.add(params, 'deleteObj');
+        deleteButton.name("Delete Selected Object");
+
 
     }
 }
@@ -420,14 +435,20 @@ function textureT(textureMode) {
 let orgData;
 
 // function to switch themes for pollution 
-document.getElementsByClassName("pTheme")[0].addEventListener("click", function () {
+document.getElementsByClassName("pTheme")[0].addEventListener("click",  function () {
+    try{
+        const data = fetch('https://cbit-airflow.up.railway.app/getPollutionLevels')
+    }
+    catch(err){
+        console.log("airflow instance working well.s")
+    }
+
     for (var i = 0; i < scene.children.length; i++) {
         if (i > 4 && scene.children[i].type == "Mesh") {
             const selectedObject = scene.children[i];
             let first = selectedObject.scale.x + selectedObject.scale.y + selectedObject.scale.z;
-    
             first = first % 10;
-    
+
             // Determine color based on the sum of scale components
             let color;
             if (first >= 9) {
@@ -451,64 +472,77 @@ document.getElementsByClassName("pTheme")[0].addEventListener("click", function 
             } else {
                 color = new THREE.Color(255 / 255, 125 / 255, 125 / 255); // Lightest shade
             }
-    
+
             // Assign the calculated color to the object
             scene.children[i].material.color = color;
         }
     }
-    
+
 });
 
 // function to switch themes for energy
 document.getElementsByClassName("eTheme")[0].addEventListener("click", function () {
-    for (var i = 0; i < scene.children.length; i++) {
-    if (i > 4 && scene.children[i].type == "Mesh") {
-        const selectedObject = scene.children[i];
-        let first = selectedObject.scale.x + selectedObject.scale.y + selectedObject.scale.z;
-
-        first = first % 10;
-
-        // Determine color based on the sum of scale components
-        let color;
-        if (first >= 9) {
-            color = new THREE.Color(255 / 255, 165 / 255, 0 / 255); // Full intensity orange
-        } else if (first >= 8) {
-            color = new THREE.Color(255 / 255, 140 / 255, 0 / 255);
-        } else if (first >= 7) {
-            color = new THREE.Color(255 / 255, 127 / 255, 0 / 255);
-        } else if (first >= 6) {
-            color = new THREE.Color(255 / 255, 114 / 255, 0 / 255);
-        } else if (first >= 5) {
-            color = new THREE.Color(255 / 255, 102 / 255, 0 / 255);
-        } else if (first >= 4) {
-            color = new THREE.Color(255 / 255, 89 / 255, 0 / 255);
-        } else if (first >= 3) {
-            color = new THREE.Color(255 / 255, 76 / 255, 0 / 255);
-        } else if (first >= 2) {
-            color = new THREE.Color(255 / 255, 64 / 255, 0 / 255);
-        } else if (first >= 1) {
-            color = new THREE.Color(255 / 255, 51 / 255, 0 / 255);
-        } else {
-            color = new THREE.Color(255 / 255, 39 / 255, 0 / 255); // Lowest intensity orange
-        }
-
-        // Assign the calculated color to the object
-        scene.children[i].material.color = color;
+    try{
+        const data = fetch('https://cbit-airflow.up.railway.app/getEnergyLevels')
     }
-}
+    catch(err){
+        console.log("airflow instance working well.s")
+    }
 
-    
+    for (var i = 0; i < scene.children.length; i++) {
+        if (i > 4 && scene.children[i].type == "Mesh") {
+            const selectedObject = scene.children[i];
+            let first = selectedObject.scale.x + selectedObject.scale.y + selectedObject.scale.z;
+
+            first = first % 10;
+
+            // Determine color based on the sum of scale components
+            let color;
+            if (first >= 9) {
+                color = new THREE.Color(255 / 255, 165 / 255, 0 / 255); // Full intensity orange
+            } else if (first >= 8) {
+                color = new THREE.Color(255 / 255, 140 / 255, 0 / 255);
+            } else if (first >= 7) {
+                color = new THREE.Color(255 / 255, 127 / 255, 0 / 255);
+            } else if (first >= 6) {
+                color = new THREE.Color(255 / 255, 114 / 255, 0 / 255);
+            } else if (first >= 5) {
+                color = new THREE.Color(255 / 255, 102 / 255, 0 / 255);
+            } else if (first >= 4) {
+                color = new THREE.Color(255 / 255, 89 / 255, 0 / 255);
+            } else if (first >= 3) {
+                color = new THREE.Color(255 / 255, 76 / 255, 0 / 255);
+            } else if (first >= 2) {
+                color = new THREE.Color(255 / 255, 64 / 255, 0 / 255);
+            } else if (first >= 1) {
+                color = new THREE.Color(255 / 255, 51 / 255, 0 / 255);
+            } else {
+                color = new THREE.Color(255 / 255, 39 / 255, 0 / 255); // Lowest intensity orange
+            }
+
+            // Assign the calculated color to the object
+            scene.children[i].material.color = color;
+        }
+    }
+
+
 })
 
 // function to switch themes for energy
 document.getElementsByClassName("Hindex")[0].addEventListener("click", function () {
+    try{
+        const data = fetch('https://cbit-airflow.up.railway.app/getHappinessLevels')
+    }
+    catch(err){
+        console.log("airflow instance working well.s")
+    }
     for (var i = 0; i < scene.children.length; i++) {
         if (i > 4 && scene.children[i].type == "Mesh") {
             const selectedObject = scene.children[i];
             let first = selectedObject.scale.x + selectedObject.scale.y + selectedObject.scale.z + Math.floor(Math.random() * 100000) + 1 - Math.floor(Math.random() * 100000) + 1;;
             first = Math.abs(first);
             first = first % 10;
-    
+
             // Determine color based on the sum of scale components
             let color;
             if (first >= 9) {
@@ -532,13 +566,13 @@ document.getElementsByClassName("Hindex")[0].addEventListener("click", function 
             } else {
                 color = new THREE.Color(0 / 255, 70 / 255, 0 / 255); // Lowest intensity green
             }
-    
+
             // Assign the calculated color to the object
             scene.children[i].material.color = color;
         }
     }
-    
-    
+
+
 })
 
 

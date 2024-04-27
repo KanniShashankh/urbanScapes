@@ -59,8 +59,9 @@ function onDocumentMouseDown(event) {
                         if (buildingFolder !== null) {
                             buildingFolder.remove(colourPicker);
                             buildingFolder.remove(scalePicker);
-                            buildingFolder.remove(pollutionLevel);
+                            // buildingFolder.remove(pollutionLevel);
                             buildingFolder.remove(bodyScaleLevel);
+                            buildingFolder.remove(deleteButton);
                         }
                     }
                 }
@@ -81,8 +82,9 @@ function onDocumentMouseDown(event) {
                 if (buildingFolder !== null) {
                     buildingFolder.remove(colourPicker);
                     buildingFolder.remove(scalePicker);
-                    buildingFolder.remove(pollutionLevel);
+                    // buildingFolder.remove(pollutionLevel);
                     buildingFolder.remove(bodyScaleLevel);
+                    buildingFolder.remove(deleteButton);
                 }
             }
             break;
