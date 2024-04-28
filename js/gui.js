@@ -61,11 +61,11 @@ var params = {
     },
 
     deleteObj: function () {
-        console.log("called");
+        // console.log("called");
         if (!isSelected) {
             return;
         }
-        console.log(selectedObject)
+        // console.log(selectedObject)
     },
 
     generate1: function () { //match the skybox
@@ -367,8 +367,8 @@ exportBtn.name("Export City");
 
 function selectCheck() {
     if (isSelected == true) {
-        console.log('selcte')
-        console.log(selectedObject)
+        // console.log('selcte')
+        // console.log(selectedObject)
         var paramcolor = {
             color: selectedObjectColor
         };
@@ -434,16 +434,15 @@ function textureT(textureMode) {
 
 let orgData;
 
-console.log(scene)
 
 // function to switch themes for pollution 
 document.getElementsByClassName("pTheme")[0].addEventListener("click",  function () {
-    try{
-        const data = fetch('https://cbit-airflow.up.railway.app/getPollutionLevels')
-    }
-    catch(err){
-        console.log("airflow instance working well.s")
-    }
+    // try{
+    //     const data = fetch('https://cbit-airflow.up.railway.app/getPollutionLevels')
+    // }
+    // catch(err){
+    //     console.log("airflow instance working well.s")
+    // }
 
     for (var i = 0; i < scene.children.length; i++) {
         if (i > 4 && scene.children[i].type == "Mesh") {
@@ -484,12 +483,12 @@ document.getElementsByClassName("pTheme")[0].addEventListener("click",  function
 
 // function to switch themes for energy
 document.getElementsByClassName("eTheme")[0].addEventListener("click", function () {
-    try{
-        const data = fetch('https://cbit-airflow.up.railway.app/getEnergyLevels')
-    }
-    catch(err){
-        console.log("airflow instance working well.s")
-    }
+    // try{
+    //     const data = fetch('https://cbit-airflow.up.railway.app/getEnergyLevels')
+    // }
+    // catch(err){
+    //     console.log("airflow instance working well.s")
+    // }
 
     for (var i = 0; i < scene.children.length; i++) {
         if (i > 4 && scene.children[i].type == "Mesh") {
@@ -532,15 +531,15 @@ document.getElementsByClassName("eTheme")[0].addEventListener("click", function 
 
 // function to switch themes for energy
 document.getElementsByClassName("Hindex")[0].addEventListener("click", function () {
-    try{
-        const data = fetch('https://cbit-airflow.up.railway.app/getHappinessLevels')
-    }
-    catch(err){
-        console.log("airflow instance working well.s")
-    }
+    // try{
+    //     const data = fetch('https://cbit-airflow.up.railway.app/getHappinessLevels')
+    // }
+    // catch(err){
+    //     console.log("airflow instance working well.s")
+    // }
     for (var i = 0; i < scene.children.length; i++) {
         if (i > 4 && scene.children[i].type == "Mesh") {
-            console.log(scene.children[i])
+            // console.log(scene.children[i])
             const selectedObject = scene.children[i];
             let first = selectedObject.scale.x + selectedObject.scale.y + selectedObject.scale.z + Math.floor(Math.random() * 100000) + 1 - Math.floor(Math.random() * 100000) + 1;;
             first = Math.abs(first);

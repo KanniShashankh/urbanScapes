@@ -181,7 +181,7 @@
         reader.onload = function (event) {
           const jsonData = JSON.parse(event.target.result);
           scene = new THREE.ObjectLoader().parse(jsonData);
-          console.log(jsonData);
+          // console.log(jsonData);
           // Now you can use jsonData as needed
         };
         reader.readAsText(file);

@@ -67,6 +67,8 @@ var GameLoop = function () {
     requestAnimationFrame(GameLoop);
 }
 
+GenerateCity(30);
+
 requestAnimationFrame(GameLoop);
 //link the resize of the window to the update of the camera
 window.addEventListener('resize', MyResize);
